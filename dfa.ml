@@ -1,1 +1,0 @@
-(*DFA Automata Simulator*)
