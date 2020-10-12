@@ -41,11 +41,8 @@ processed, it's automatically rejected.<br /><br />
 [Hint: If you cause a runtime error or raise an exception, you might want to flush the output buffer
 so that you don't lose part of the output.]<br /><br />
 A sample trace for the DFA and input in the example above could be something like:<br /><br />
-   0 b 0 b 0 a 1 1 a 1 c 0 a 1    — space as 4th character.<br />
-or 0 b 0 b 0 a 1 ' '1 a 1 c 0 a 1 — space as 4th character.<br /><br />
-Your program should be organized so that at the top level of the read-eval-print loop, you can enter<br /><br />
+0 b 0 b 0 a 1 1 a 1 c 0 a 1    — space as 4th character.<br />
+0 b 0 b 0 a 1 ' '1 a 1 c 0 a 1 — space as 4th character.<br /><br />
+Your program should be organized so that at the top level of the read-eval-print loop, you can enter:<br /><br />
    simulate dfa "name of text file" or simulate dfa("name of text file")<br /><br />
-as appropriate for OCaml or python.<br /><br />
-As with the homework, you should work in groups of 3 (or 2), where groups will be randomly
-generated for synchronous students and self-organized for asynchronous students. In addition to
-your program, you should submit individual work reports, as with the homework.
+as appropriate for OCaml or python.
