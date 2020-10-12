@@ -1,4 +1,10 @@
-import test
+import sys
+
+
+# Tanner Dyer - A20437354
+# Justin Orr - A20374635
+# Safa Slote - A20420223
+
 
 class DFA:
     def __init__(self, number_of_states, number_of_accepting_states, accepting_states, 
@@ -12,50 +18,65 @@ class DFA:
                 self.transitions = transitions
                 self.dfa_input = dfa_input
 
-    def printInfo(self):
-        print('num_states: {}'.format(self.number_of_states))
-        print('num_accepting_states: {}'.format(self.number_of_accepting_states))
-        print('accepting_states: {}'.format(self.accepting_states))
-        print('num_of_alphabet_chars: {}'.format(self.num_of_alphatbet_chars))
-        print('alphabet_chars: {}'.format(self.alphabet_chars))
-        print('num_transitions: {}'.format(self.num_of_transitions))
-        print('transitions: {}'.format(self.transitions))
-        print('dfa_input: {}'.format(self.dfa_input))
 
     def simulateDFA(self):
         s = 0
         c = self.dfa_input[0]
         
-        for i in range(1, len(self.dfa_input)):
-            s = self.transition(s, c)
+        for i in range(0, len(self.dfa_input)):
+            print(s, c, end=' ')
             c = self.dfa_input[i]
+            s = self.transition(s, c)
+            if s == -1:
+                print("\nExecution cannot proceed:\n    Current symbol: {}".format(c))
+                break
         
-        if s in self.accepting_states:
-            return "Yes"
+        print()
+
+        if str(s) in self.accepting_states:
+            print("Yes")
         else:
-            return "No"
+            print("No")
 
+    # c being equal to a space character is the same as an empty string in our transition table
+    # based on the project description. Therefore in order to handle c for this case, we must 
+    # compare to see if it is equal to a space character and simultaneously see if the character 
+    # in the transition function is equal to empty string
     def transition(self, s, c):
+        for t in self.transitions:
+            new_t = t.replace(' ', '').split(',')
+            if int(new_t[0]) == s:
+                if new_t[1] == c:
+                    return int(new_t[2])
+                elif c == ' ' and new_t[1] == '':
+                    return int(new_t[2])
+        return -1
 
-        return 0
+# generates a DFA object from an input file
+def generateDFA(filename):
+    file = open(filename, 'r')
 
+    lines = file.readlines()
 
-    # DFA psuedocode
-    '''
-    s = starting state
-    c = next char
-    while(c != eof):
-        s = move(s, c)
-        c = nextChar()
-    if s in accepting_states:
-        return "Yes"
-    else:
-        return "No"
-    '''
+    # get transition functions
+    num_transitions = int(lines[5])
+    transitions = []
+    for i in range(6, 6 + num_transitions):
+        transitions.append(lines[i].replace("\n", ""))
+
+    dfa = DFA(
+        int(lines[0].rstrip()), # number of states
+        int(lines[1].rstrip()), # number of accepting states
+        lines[2].rstrip(),      # list of accepting states
+        int(lines[3].rstrip()), # number of chars in alphabet
+        lines[4].replace("\n", ""), # chars in alphabet
+        int(num_transitions),       # number of transitions
+        transitions,                # transition functions
+        lines[6 + num_transitions].rstrip() # dfa input
+    )
+
+    return dfa
 
 if __name__ == "__main__":
-    dfa = test.generateDFA('input.txt')
-    dfa.printInfo()
-    print(len(dfa.alphabet_chars))
-
-
+    dfa = generateDFA(sys.argv[1])
+    dfa.simulateDFA()
