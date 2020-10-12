@@ -12,20 +12,20 @@ The goal is to write an OCaml or python program that reads a description of a DF
 ### Example of DFA Input
 The DFA below has states 0 and 1 with 1 as the only accepting state, alphabet a, b, c, and space,
 and seven transition function entries.<br /><br />
-2_________ — Two states, 0, 1<br />
-1_________ — One accepting state<br />
-1_________ — 1 is an accepting state<br />
-4_________ — 4 characters in the alphabet<br />
-abc_______ — the characters are a, b, c, and space (hard to see, but it's the 4th character)<br />
-7_________ — Number of transition function entries<br />
-1,b,1_____ — In state 1, on b, go to state 1 [note the entries don't have to be sorted]<br />
-1, a , 1__ — In state 1, on a, go to state 1 [notice there exists whitespace]<br />
+2          — Two states, 0, 1<br />
+1          — One accepting state<br />
+1          — 1 is an accepting state<br />
+4          — 4 characters in the alphabet<br />
+abc        — the characters are a, b, c, and space (hard to see, but it's the 4th character)<br />
+7          — Number of transition function entries<br />
+1,b,1      — In state 1, on b, go to state 1 [note the entries don't have to be sorted]<br />
+1, a , 1   — In state 1, on a, go to state 1 [notice there exists whitespace]<br />
 0, b, 0<br />
 0,a, 1<br />
 1, c,0<br />
-0,,0______ — In state 0, on space, go to state 0 [two commas imply space as input symbol]<br />
-1 , , 1___ — In state 1, on space, go to state 1 [two commas imply space as input symbol]<br />
-bba aca___ — The input to the DFA<br />
+0,,0       — In state 0, on space, go to state 0 [two commas imply space as input symbol]<br />
+1 , , 1    — In state 1, on space, go to state 1 [two commas imply space as input symbol]<br />
+bba aca    — The input to the DFA<br />
 The alphabet should include only individual characters (no escape sequences like \t). If a space
 appears within the M characters of the alphabet, then a space is one of the M symbols. Similarly, if
 a space appears in the DFA input, treat it as a symbol.<br />
@@ -41,10 +41,10 @@ processed, it's automatically rejected.<br />
 [Hint: If you cause a runtime error or raise an exception, you might want to flush the output buffer
 so that you don't lose part of the output.]<br />
 A sample trace for the DFA and input in the example above could be something like:<br /><br />
-___0 b 0 b 0 a 1 1 a 1 c 0 a 1___ — space as 4th character.<br />
+   0 b 0 b 0 a 1 1 a 1 c 0 a 1    — space as 4th character.<br />
 or 0 b 0 b 0 a 1 ' '1 a 1 c 0 a 1 — space as 4th character.<br />
 Your program should be organized so that at the top level of the read-eval-print loop, you can enter <br />
-___simulate_dfa "name of text file" or simulate_dfa("name of text file")<br />
+   simulate dfa "name of text file" or simulate dfa("name of text file")<br />
 as appropriate for OCaml or python.<br />
 As with the homework, you should work in groups of 3 (or 2), where groups will be randomly
 generated for synchronous students and self-organized for asynchronous students. In addition to
