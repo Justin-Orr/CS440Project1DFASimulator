@@ -22,6 +22,23 @@ class DFA:
         print('transitions: {}'.format(self.transitions))
         print('dfa_input: {}'.format(self.dfa_input))
 
+    def simulateDFA(self):
+        s = 0
+        c = self.dfa_input[0]
+        
+        for i in range(1, len(self.dfa_input)):
+            s = self.transition(s, c)
+            c = self.dfa_input[i]
+        
+        if s in self.accepting_states:
+            return "Yes"
+        else:
+            return "No"
+
+    def transition(self, s, c):
+
+        return 0
+
 
     # DFA psuedocode
     '''
