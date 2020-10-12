@@ -25,27 +25,27 @@ abc        — the characters are a, b, c, and space (hard to see,
 1, c,0<br />
 0,,0       — In state 0, on space, go to state 0 [two commas imply space as input symbol]<br />
 1 , , 1    — In state 1, on space, go to state 1 [two commas imply space as input symbol]<br />
-bba aca    — The input to the DFA<br />
+bba aca    — The input to the DFA<br /><br />
 The alphabet should include only individual characters (no escape sequences like \t). If a space
 appears within the M characters of the alphabet, then a space is one of the M symbols. Similarly, if
-a space appears in the DFA input, treat it as a symbol.<br />
+a space appears in the DFA input, treat it as a symbol.<br /><br />
 Print out a trace of information about the DFA as you read it. If you notice an error, you're allowed
 to print an error message/raise an exception and halt. You're also allowed to wait until execution
 of the DFA to realize there are errors in the transition function (bad state number, bad symbol,
-multiple entries for the same state/symbol pair).<br />
+multiple entries for the same state/symbol pair).<br /><br />
 When you execute the DFA on the input, print a trace of the state, symbol, state, symbol, ...., state it
 encounters. At the end, say whether or not the input is accepted. If you're in a state and the next
 symbol has no transition function result defined, then stop execution and say what the input
 symbol is and that you're stuck [execution cannot proceed]. Since not all the input has been
-processed, it's automatically rejected.<br />
+processed, it's automatically rejected.<br /><br />
 [Hint: If you cause a runtime error or raise an exception, you might want to flush the output buffer
-so that you don't lose part of the output.]<br />
+so that you don't lose part of the output.]<br /><br />
 A sample trace for the DFA and input in the example above could be something like:<br /><br />
    0 b 0 b 0 a 1 1 a 1 c 0 a 1    — space as 4th character.<br />
-or 0 b 0 b 0 a 1 ' '1 a 1 c 0 a 1 — space as 4th character.<br />
-Your program should be organized so that at the top level of the read-eval-print loop, you can enter <br />
-   simulate dfa "name of text file" or simulate dfa("name of text file")<br />
-as appropriate for OCaml or python.<br />
+or 0 b 0 b 0 a 1 ' '1 a 1 c 0 a 1 — space as 4th character.<br /><br />
+Your program should be organized so that at the top level of the read-eval-print loop, you can enter<br /><br />
+   simulate dfa "name of text file" or simulate dfa("name of text file")<br /><br />
+as appropriate for OCaml or python.<br /><br />
 As with the homework, you should work in groups of 3 (or 2), where groups will be randomly
 generated for synchronous students and self-organized for asynchronous students. In addition to
 your program, you should submit individual work reports, as with the homework.
