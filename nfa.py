@@ -26,7 +26,8 @@ class NFA:
         for i in range(0, len(S)):
             for null_transition in self.null_transitions:
                 if null_transition[0] == S[i]:
-                    S.append(int(null_transition[-1]))
+                    if int(null_transition[-1]) not in S: # ensuring no duplicates are added to the set of reachable states
+                        S.append(int(null_transition[-1]))
         return S
 
         #end_states = []
