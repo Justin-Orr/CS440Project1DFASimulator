@@ -67,16 +67,19 @@ class NFA:
                 for t in self.null_transitions: 
                     new_t = t.replace(' ', '').split(',') # take transition string and break up into a list of tokens
                     if int(new_t[0]) == S[i]:
-                        S[i] = int(new_t[1])
+                        if int(new_t[1]) not in S:
+                            S[i] = int(new_t[1])
 
             # Check state using base transition functions
             for t in self.transitions: 
                 new_t = t.replace(' ', '').split(',') # take transition string and break up into a list of tokens
                 if int(new_t[0]) == S[i]:
                     if new_t[1] == c:
-                        S[i] = int(new_t[2])
+                        if int(new_t[2]) not in S:
+                            S[i] = int(new_t[2])
                     elif c == ' ' and new_t[1] == '':
-                        S[i] = int(new_t[2])
+                        if int(new_t[2]) not in S:
+                            S[i] = int(new_t[2])
         return S
 
 # generates a DFA object from an input file
