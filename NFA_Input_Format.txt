@@ -1,0 +1,11 @@
+NFA Input Format
+0. One line with the number of states N in the NFA (The states will be 0 through N-1)
+1. One line with the number of accepting states in the NFA
+2. One line (for each accepting state) with the state number
+3. One line with the number of symbols M in the alphabet
+4. One line with the alphabet (M characters)
+4. One line with the number of transition cases
+5. One line for each transition case: in %d, %c, %d format (old-state "comma" symbol (possibly blank for space symbol) "comma" new-state)
+6. One line with the number of epsilon-transitions
+7. One line for each epsilon-transition in %d, %d format (old-state, new-state)
+8. One line with the input to the NFA
