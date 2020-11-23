@@ -30,21 +30,18 @@ class NFA:
                         S.append(int(null_transition[-1]))
         return S
 
-        #end_states = []
-        #for null_transition in self.null_transitions:
-        #    if null_transition[0] == S:
-        #        end_states.append(null_transition[-1])
-        #return end_states
-
 
     def simulateNFA(self):
-        S = self.epsilonClosure([str(0)])
-        #c = self.nfa_input[0] Dont think this line is needed
+
+        # determining epsilonClosure for the initial state
+        S = self.epsilonClosure([str(0)]) 
 
         for i in range(0, len(self.nfa_input)):
             c = self.nfa_input[i]
             S = self.epsilonClosure(self.transition(S, c))
             print(S, c)
+
+            # TODO: where do we ever add -1 to the set of states?
             for state in S:
                 if state == -1:
                     print("\nExecution cannot proceed:\n    Current symbol: {}".format(c))
