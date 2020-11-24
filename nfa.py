@@ -22,29 +22,57 @@ class NFA:
                 self.nfa_input = nfa_input
 
 
-    def epsilonClosure(self, S):
+    def epsilonClosure(self, S, paths):
+        # print(S)
         for i in range(0, len(S)):
             for null_transition in self.null_transitions:
-                if null_transition[0] == S[i]:
+                if null_transition[0] == str(S[i]):
                     if int(null_transition[-1]) not in S: # ensuring no duplicates are added to the set of reachable states
                         S.append(int(null_transition[-1]))
+                        if int(null_transition[-1]) not in paths.keys():
+                            paths[int(null_transition[-1])] = ['ε']
+                        else:
+                            if 'ε' not in paths[int(null_transition[-1])]:
+                                paths[int(null_transition[-1])].append('ε')
         return S
 
 
     def simulateNFA(self):
 
+        print("\nNOTICE: A state value of -1 specifies a dead state. Dead states are handled with an error message and the program continues to execute.\n")
+
         # determining epsilonClosure for the initial state
-        S = self.epsilonClosure([str(0)]) 
+        paths = {}
+        S = self.epsilonClosure([0], paths)
 
         for i in range(0, len(self.nfa_input)):
             c = self.nfa_input[i]
-            S = self.epsilonClosure(self.transition(S, c))
-            print(S, c)
+            print('Current char: {}\nPossible current states prior to transition: {}'.format(c, S))
+            S = self.epsilonClosure(self.transition(S, c, paths), paths)
+            c_states = []
+            e_states = []
+            for s in S:
+                for k, v in paths.items():
+                    if k == s:
+                        for t in self.transitions:
+                            new_t = t.replace(' ', '').split(',')
+                            if c in new_t:
+                                if s == int(new_t[0]):
+                                    if c in v:
+                                        c_states.append(k)
+                        for n in self.null_transitions:
+                            if s == int(n[0]):
+                                e_states.append(int(n[-1]))
+                        
 
-            # TODO: where do we ever add -1 to the set of states?
+            print('Possible states after transition: {}'.format(S))
+
             for state in S:
                 if state == -1:
-                    print("\nExecution cannot proceed:\n    Current symbol: {}".format(c))
+                    print("   Error: Dead state was found. Removing from list of current possible states and continuing.")
+                    S.remove(-1)
+
+            print('Reachable states using {}: {}\nReachable states using ε: {}\n'.format(c, c_states, e_states))
 
         print()
 
@@ -59,27 +87,48 @@ class NFA:
     # based on the project description. Therefore in order to handle c for this case, we must 
     # compare to see if it is equal to a space character and simultaneously see if the character 
     # in the transition function is equal to empty string
-    def transition(self, S, c):
+    def transition(self, S, c, paths):
         # iterate over every state within S
         for i in range(0, len(S)):
+            found_match = False
             # Check if c is an empty string, if so then check null-transition functions
             if c == '':
                 for t in self.null_transitions: 
                     new_t = t.replace(' ', '').split(',') # take transition string and break up into a list of tokens
                     if int(new_t[0]) == S[i]:
+                        found_match = True
                         if int(new_t[1]) not in S:
+                            print(new_t[0], S[i], new_t[1])
                             S[i] = int(new_t[1])
 
+            temp = {} # stores values that need to be updated after transition
+
             # Check state using base transition functions
-            for t in self.transitions: 
+            for t in self.transitions:                 
                 new_t = t.replace(' ', '').split(',') # take transition string and break up into a list of tokens
                 if int(new_t[0]) == S[i]:
                     if new_t[1] == c:
-                        if int(new_t[2]) not in S:
-                            S[i] = int(new_t[2])
+                        temp[i] = int(new_t[2])
+                        found_match = True
+                        
+                        # updating what state c leads to
+                        if (int(new_t[2]) not in paths.keys()):
+                            paths[int(new_t[2])] = [c]
+                        else:
+                            if c not in paths[int(new_t[2])]:
+                                paths[int(new_t[2])].append(c)
+                        
                     elif c == ' ' and new_t[1] == '':
+                        found_match = True
                         if int(new_t[2]) not in S:
                             S[i] = int(new_t[2])
+
+            for k, v in temp.items():
+                S[k] = v
+                
+            if not found_match:
+                S[i] = -1
+
         return S
 
 # generates a DFA object from an input file
@@ -144,6 +193,5 @@ def generateNFA(filename):
     return nfa
 
 if __name__ == "__main__":
-    #nfa = generateNFA(sys.argv[1])
-    nfa = generateNFA("input2.txt")
+    nfa = generateNFA(sys.argv[1])
     nfa.simulateNFA()
